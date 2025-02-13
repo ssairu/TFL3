@@ -1,0 +1,8 @@
+S:ac>a
+S:a>a
+S:aa>a.S.C
+S:ab>a.S.C
+S:bc>b
+S:b>b
+C:c>c
+C:cc>c
