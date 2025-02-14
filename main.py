@@ -1,6 +1,7 @@
 import fuzz
 from collections import defaultdict, deque
 import sys
+from fuzz import Grammar
 
 sys.setrecursionlimit(10000)
 
@@ -225,7 +226,7 @@ class GeneratorPDA:
     #     else:
     #         return False
 
-    def checkWord(self, word):
+    def checkWord(self, word, tree=True):
         # Старый красивый код для рекурсии, удалять жалко а недетерминизм на нём реализовать
         # не придумал как, поэтому переписал всё на стек.
 
@@ -246,7 +247,8 @@ class GeneratorPDA:
         success = False
 
         while stacks:
-            print(stacks)
+            if tree:
+                print(stacks)
             delete_indexes = []
             for i in range(len(stacks)):
                 if not stacks[i][0]:
@@ -295,6 +297,36 @@ class GeneratorPDA:
                 ll_mark = False
         return ll_mark
 
+    def get_examples(self, n=None, testing=False, allTerminals=True):
+        grammar = Grammar()
+        grammar.readGrammar(startingNT=self.startingNT)
+        grammar.prepareForGeneration()
+        grammar.generate(n=n, testing=testing, allTerminals=allTerminals)
+
+    def test_examples(self, tree=False):
+        with open('tests.txt', 'r') as file:
+            lines = file.readlines()
+
+        lines = [tuple(line.strip().split()) for line in lines]
+        print(lines)
+        every_good = True
+        for word, mark in lines:
+            res = self.checkWord(word, tree)
+            if res and mark == '0':
+                print('wrong - ' + word + ' ' + mark + '    res: ' + str(self.checkWord(word)))
+                every_good = False
+            elif not res and mark == '1':
+                print('wrong - ' + word + ' ' + mark + '    res: ' + str(self.checkWord(word)))
+                every_good = False
+
+        return every_good
+
+
+
+
+
+
+
 
 def main():
     k = int(input('введите k: '))
@@ -306,6 +338,8 @@ def main():
     PDA = GeneratorPDA(k)
     PDA.createParseTable(startingNT='S')
     print(PDA.checkWord('aaaaccc'))
+    # PDA.get_examples(1000)
+    # print(PDA.test_examples())
     # PDA.readParseTable()
 
 

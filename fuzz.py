@@ -35,7 +35,8 @@ class Grammar():
         self.NT_To_NT_Rules = defaultdict(list)
 
     def readGrammar(self, startingNT=None):
-        lines = sys.stdin.readlines()
+        with open('grammar.txt', 'r') as file:
+            lines = file.readlines()
 
         for line in lines:
             line_splited = list(map(lambda r: r.replace(' ', ''), line.strip().split('->')))
