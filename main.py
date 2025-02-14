@@ -269,6 +269,14 @@ class GeneratorPDA:
                         continue
                 elif symbol in self.allNTs:
                     rules = self.parseTable[(symbol, nextk)]
+
+                    new_rules = []
+                    leni = len(stacks[i][0])
+                    for rule in rules:
+                        if leni + len(rule) <= len(word[pos:]):
+                            new_rules.append(rule)
+                    rules = new_rules
+
                     if not rules:
                         delete_indexes.append(i)
                         continue
@@ -337,7 +345,7 @@ def main():
 
     PDA = GeneratorPDA(k)
     PDA.createParseTable(startingNT='S')
-    print(PDA.checkWord('aaaaccc'))
+    print(PDA.checkWord('bb'))
     # PDA.get_examples(1000)
     # print(PDA.test_examples())
     # PDA.readParseTable()

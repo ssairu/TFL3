@@ -1,2 +1,1 @@
-S -> a | aSC | b
-C -> c
+S -> SS | b

@@ -1,4 +1,3 @@
-S:a>a
-S:a>a.S.C
+S:bb>S.S
+S:bb>b
 S:b>b
-C:c>c
